@@ -1,0 +1,27 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: fullstack
+  labels:
+    app.kubernetes.io/part-of: fullstack
+    apps.tanzu.vmware.com/workload-type: web
+spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"
+      - name: BP_JAVA_INSTALL_NODE
+        value: "true"
+      - name: BP_NODE_PROJECT_PATH
+        value: "frontend"
+      - name: BP_GRADLE_BUILT_ARTIFACT
+        value: "backend/build/libs/*.jar"
+  params:
+    - name: annotations
+      value:
+        autoscaling.knative.dev/min-scale: "1"
+  source:
+    git:
+      url: https://github.com/th3n3rd/tap-recipe-java-node-fullstack.git
+      ref:
+        branch: main
